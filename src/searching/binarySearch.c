@@ -24,3 +24,63 @@
  *   (O custo de ordenar pode ser maior que o da busca se for feita apenas uma vez).
  * - Acesso Aleatório: Precisa de acesso direto aos índices (ruim para listas encadeadas simples).
  */
+
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
+
+ #define ARRAY_SIZE 1000000
+
+ int binarySearch(int array[], int size, int target, int rounds) {
+  int left = 0;
+  int right = size - 1;
+
+  while(left <= right ) {
+    int mid = left + (right - left) / 2;
+
+    if(array[mid] == target) {
+      printf("Encontrado na iteracao %d: %d \n",   rounds, array[mid]);
+      return mid;
+    }
+
+    if(array[mid] < target) {
+      printf("Maior que o meio na iteracao %d: %d \n", rounds, array[mid]);
+      left = mid + 1;
+    } else {
+      printf("Menor que o meio na iteracao %d: %d \n", rounds, array[mid]);
+      right = mid - 1;
+    }
+    rounds++;
+  }
+
+  return -1;
+ }
+
+ int main() {
+  
+  int target = 663999;
+  int i = 0;
+
+  printf("Inciando a busca binaria\n");
+
+  // Inicializa array com numeros ordenados
+  int *array = (int*)malloc(ARRAY_SIZE * sizeof(int));
+  if (array == NULL) {
+    printf("Erro de alocacao de memoria\n");
+    return 1;
+  }
+
+  for (i = 0; i < ARRAY_SIZE; i++) {
+    array[i] = i*3;
+  }
+  
+  int result = binarySearch(array, ARRAY_SIZE, target, 0);
+
+  if(result != -1) {
+    printf("Elemento %d encontrado na posicao %d\n", target, result);
+  } else {
+    printf("Elemento %d nao encontrado\n", target);
+  }
+
+  free(array);
+ }
